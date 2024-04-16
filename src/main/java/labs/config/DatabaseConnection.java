@@ -10,8 +10,8 @@ import java.util.Properties;
 public class DatabaseConnection {
 
     String URL = "jdbc:oracle:thin:@//localhost:1521/ORCLPDB1";
-    String username = "HR";
-    String password = "hrpass";
+    String username = "javaapi";
+    String password = "javaapi";
 
     Connection conn;
 
@@ -25,13 +25,14 @@ public class DatabaseConnection {
 
     }
 
-    public Connection getConnection(){
-        return conn;
-    }
+//    public Connection getConnection(){
+//        return conn;
+//    }
 
     public Connection connect() throws ClassNotFoundException, SQLException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         conn = DriverManager.getConnection(URL, username, password);
+        return conn;
     }
 
     public void close() throws SQLException {
