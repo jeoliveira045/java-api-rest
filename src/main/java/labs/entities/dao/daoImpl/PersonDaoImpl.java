@@ -76,7 +76,25 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public void update(Person person) {
+        try{
+            var conn = DatabaseConnection.instance().connect();
 
+            var stmt = conn.prepareStatement("UPDATE PERSON SET FIRST_NAME = ?, LAST_NAME = ? WHERE ID = ?");
+
+            stmt.setLong(3, person.getId());
+            stmt.setString(1, person.getFirstName());
+            stmt.setString(2, person.getLastName());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException e){
+            throw new DaoException(e);
+        } catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
