@@ -5,9 +5,11 @@ import labs.entities.Person;
 import labs.entities.dao.PersonDao;
 import labs.exceptions.DaoException;
 
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonDaoImpl implements PersonDao {
@@ -99,11 +101,55 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public void delete(Object o) {
+        try{
+            var conn = DatabaseConnection.instance().connect();
 
+            var stmt = conn.prepareStatement("DELETE FROM PERSON WHERE ID = ?");
+
+            stmt.setLong(1, Long.parseLong(o.toString()));
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException e) {
+
+        } catch (ClassNotFoundException e){
+
+        }
     }
 
     @Override
     public List<Person> findAll(){
+        try{
+            List<Person> personList = new ArrayList<>();
+
+            var conn = DatabaseConnection.instance().connect();
+
+            var stmt = conn.prepareStatement("SELECT ID, FIRST_NAME, LAST_NAME FROM PERSON");
+
+            stmt.executeUpdate();
+
+            var rs = stmt.getResultSet();
+
+            while(rs.next()){
+                Person person = new Person();
+                person.setId(rs.getLong("ID"));
+                person.setFirstName(rs.getString("FIRST_NAME"));
+                person.setLastName(rs.getString("LAST_NAME"));
+
+                personList.add(person);
+            }
+
+            return personList;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
+
         return null;
     }
 }

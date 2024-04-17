@@ -17,28 +17,19 @@ public class App
 
         var db = DatabaseConnection.instance();
 
-//        Statement statement = db.connect().createStatement();
-//
-//        statement.execute("CREATE TABLE PERSON(ID NUMBER PRIMARY KEY, FIRST_NAME VARCHAR(50), LAST_NAME VARCHAR(50))");
+        Statement statement = db.connect().createStatement();
+
+        statement.execute("CREATE TABLE PERSON(ID NUMBER PRIMARY KEY, FIRST_NAME VARCHAR(50), LAST_NAME VARCHAR(50))");
 
         Person person = new Person(1L, "JANE", "DOE");
 
+
         PersonDao dao = new PersonDaoImpl();
 
-//        dao.save(person);
-        System.out.println(dao.findById(1L));
-        dao.update(person);
-        System.out.println(dao.findById(1L));
-
-
-
-
-
-
-//        var insertSql = "insert into employees";
-
-
-
+        dao.save(new Person(2L, "JOHN", "DOE"));
+        dao.findAll().forEach((value) -> {
+            System.out.println(value);
+        });
 
     }
 }
